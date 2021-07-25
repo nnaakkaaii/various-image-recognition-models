@@ -13,7 +13,7 @@ def create_dataset(transform: Any, is_train: bool, opt: argparse.Namespace) -> b
 
 
 def dataset_modify_commandline_options(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
-    parser.add_argument('--img_dir', type=str, default=os.path.join('../dataloaders', 'inputs', 'mnist'), help='mnistデータを保存する場所')
+    parser.add_argument('--img_dir', type=str, default=os.path.join('inputs', 'mnist'), help='mnistデータを保存する場所')
     return parser
 
 

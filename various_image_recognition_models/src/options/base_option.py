@@ -40,7 +40,7 @@ class BaseOption:
         parser.add_argument('--in_size', type=int, default=28, choices=[28], help='入力画像の大きさ')
         parser.add_argument('--in_nch', type=int, default=1, chioces=[1, 3], help='# of input image channels: 3 for RGB and 1 for grayscale')
         parser.add_argument('--out_dim', type=int, default=10, help='分類のクラス数')
-        parser.add_argument('--save_dir', type=str, default=os.path.join('..', 'checkpoints'), help='モデルの出力の保存先ルートディレクトリ')
+        parser.add_argument('--save_dir', type=str, default=os.path.join('checkpoints'), help='モデルの出力の保存先ルートディレクトリ')
 
         self.initialized = True
         return parser

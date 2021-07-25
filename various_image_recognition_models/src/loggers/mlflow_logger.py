@@ -14,7 +14,7 @@ def create_logger(model: AbstractModel, opt: argparse.Namespace) -> AbstractLogg
 
 def logger_modify_commandline_options(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     parser = simple_logger.logger_modify_commandline_options(parser)
-    parser.add_argument('--mlflow_root_dir', type=str, default=os.path.join('..', 'mlruns'))
+    parser.add_argument('--mlflow_root_dir', type=str, default=os.path.join('mlruns'))
     parser.add_argument('--run_name', type=str, default='test')
     return parser
 
