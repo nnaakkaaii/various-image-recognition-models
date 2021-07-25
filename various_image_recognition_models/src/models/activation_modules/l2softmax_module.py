@@ -6,7 +6,7 @@ import torch.nn.functional as f
 
 
 def activation_module_modify_commandline_options(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
-    parser.add_argument('--last_temperature', type=int, default=16, help='softmaxの温度')
+    parser.add_argument('--last_temperature', type=float, default=16, help='softmaxの温度')
     return parser
 
 

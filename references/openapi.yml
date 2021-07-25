@@ -103,6 +103,35 @@ components:
         - l2softmax
         - arcface
         - cosface
+    L2SoftmaxActivationModule:
+      type: object
+      properties:
+        last_temperature:
+          type: number
+          description: softmaxの温度
+          example: 16
+    ArcFaceActivationModule:
+      type: object
+      properties:
+        last_temperature:
+          type: number
+          description: softmaxの温度
+          example: 3
+        last_margin:
+          type: number
+          description: arcfaceのマージンの角度
+          example: 0.5
+    CosFaceActivationModule:
+      type: object
+      properties:
+        last_temperature:
+          type: number
+          description: softmaxの温度
+          example: 3
+        last_margin:
+          type: number
+          description: cosfaceのマージン幅
+          example: 0.4
     ModuleName:
       type: string
       enum:

@@ -9,7 +9,7 @@ from . import _xface_module
 
 def activation_module_modify_commandline_options(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     parser.add_argument('--last_temperature', type=float, default=3, help='softmaxの温度')
-    parser.add_argument('--last_margin', type=float, default=0.4, help='cosfaceのマージンの角度')
+    parser.add_argument('--last_margin', type=float, default=0.4, help='cosfaceのマージンの幅')
     return parser
 
 
