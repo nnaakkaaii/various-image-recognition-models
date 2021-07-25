@@ -140,6 +140,10 @@ components:
           $ref: "#/components/schemas/SchedulerName"
         init_weight_name:
           $ref: "#/components/schemas/InitWeightName"
+        activation_module_name:
+          $ref: "#/components/schemas/ActivationModuleName"
+        module_name:
+          $ref: "#/components/schemas/ModuleName"
         last_p_dim:
           type: integer
           description: 最終層のパーセプトロン数
