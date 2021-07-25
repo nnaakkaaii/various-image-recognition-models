@@ -6,11 +6,11 @@ import torch.nn as nn
 
 
 def create_module(opt: argparse.Namespace) -> nn.Module:
-    return FCModule(opt.in_size, opt.in_nch, opt.out_dim, list(map(int, opt.n_layers.split(','))))
+    return FCModule(opt.in_size, opt.in_nch, opt.last_p_dim, list(map(int, opt.n_layers.split(','))))
 
 
 def module_modify_commandline_options(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
-    parser.add_argument('--n_layers', type=str, default='1024,516', help='各層のパーセプトロン数')
+    parser.add_argument('--n_layers', type=str, default='516', help='各層のパーセプトロン数')
     return parser
 
 
@@ -22,12 +22,12 @@ class FCModule(nn.Module):
     def __init__(self,
                  in_size: int,
                  in_nch: int,
-                 out_dim: int,
+                 last_p_dim: int,
                  n_layers: List[int]) -> None:
         """
         :param in_size:
         :param in_nch:
-        :param out_dim:
+        :param last_p_dim:
         :param n_layers:
         """
         super().__init__()
@@ -38,7 +38,7 @@ class FCModule(nn.Module):
                 model += self.__block(in_size * in_size * in_nch, n_layer)
             else:
                 model += self.__block(n_layers[i - 1], n_layer)
-        model += [nn.Linear(n_layers[-1], out_dim)]
+        model += [nn.Linear(n_layers[-1], last_p_dim)]
 
         self.model = nn.Sequential(*model)
 

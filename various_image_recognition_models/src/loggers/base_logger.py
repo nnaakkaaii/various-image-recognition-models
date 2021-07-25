@@ -58,7 +58,7 @@ class BaseLogger(AbstractLogger, metaclass=abc.ABCMeta):
 
     def set_dataset_length(self, train_dataset_length: int, val_dataset_length) -> None:
         self._train_dataset_length = train_dataset_length
-        self._val_dataset_length = train_dataset_length
+        self._val_dataset_length = val_dataset_length
         return
 
     def _increment_epoch(self) -> None:

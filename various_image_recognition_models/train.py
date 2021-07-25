@@ -17,7 +17,7 @@ def train(opt: argparse.Namespace) -> None:
     print('The number of training images = %s' % train_dataset_size)
 
     val_transform = transforms[opt.val_transform_name](opt)
-    val_dataset = datasets[opt.dataset_name](val_transform, True, opt)
+    val_dataset = datasets[opt.dataset_name](val_transform, False, opt)
     val_dataloader = dataloaders[opt.dataloader_name](val_dataset, opt)
     val_dataset_size = len(val_dataset)
     val_dataloader_size = len(val_dataloader)

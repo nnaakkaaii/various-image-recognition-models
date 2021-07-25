@@ -23,14 +23,17 @@ class MnistDataset(base_dataset.BaseDataset):
     渡すtransformも変更する
     """
     def __init__(self, transform: Any, max_dataset_size: int, img_dir: str, is_train: bool, train_ratio: float) -> None:
-        dataset = MNIST(img_dir, download=True, transform=transform)
-        if is_train:
-            self.dataset = dataset[:int(len(dataset) * train_ratio)]
-        else:
-            self.dataset = dataset[int(len(dataset) * train_ratio):]
+        self.dataset = MNIST(img_dir, download=True, transform=transform)
+        self.index_from = 0 if is_train else int(len(self.dataset) * train_ratio)
+        index_to = int(len(self.dataset) * train_ratio) if is_train else len(self.dataset)
 
-        super().__init__(max_dataset_size, len(self.dataset), is_train)
+        super().__init__(max_dataset_size, index_to - self.index_from, is_train)
+
+    def __len__(self) -> int:
+        return min(self.dataset_length, self.max_dataset_size)
 
     def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
-        x, t = self.dataset[idx]
+        idx = idx + self.index_from
+        x, _t = self.dataset[idx]
+        t = torch.tensor(_t)
         return {'x': x, 't': t}

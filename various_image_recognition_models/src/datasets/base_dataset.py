@@ -14,4 +14,4 @@ class BaseDataset(data.Dataset, metaclass=abc.ABCMeta):
         self.is_train = is_train
 
     def __len__(self) -> int:
-        return max(self.dataset_length, self.max_dataset_size)
+        return min(self.dataset_length, self.max_dataset_size)
