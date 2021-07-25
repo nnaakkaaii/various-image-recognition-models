@@ -118,6 +118,17 @@ components:
       type: string
       enum:
         - simple
+    BaseModel:
+      type: object
+      properties:
+        loss_name:
+          $ref: "#/components/schemas/LossName"
+        optimizer_name:
+          $ref: "#/components/schemas/OptimizerName"
+        scheduler_name:
+          $ref: "#/components/schemas/SchedulerName"
+        init_weight_name:
+          $ref: "#/components/schemas/InitWeightName"
     SimpleModel:
       type: object
       properties:
