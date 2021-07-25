@@ -1,0 +1,287 @@
+openapi: 3.0.0
+servers:
+  - description: Github
+    url: http://github.com/nnaakkaaii/various-image-recognition-models.git
+info:
+  description: |
+    画像認識のモデルを統一的に扱い、コマンドラインにより使い分けるための汎用フレームワーク
+  version: "v1.0"
+  title: 画像認識汎用フレームワーク
+  contact:
+    email: tensaku.it@gmail.com
+paths:
+  /pseudo:
+    get:
+      summary: "仮の表示"
+      description: "エラー対策"
+      responses:
+        '200':
+          description: 仮のresponse
+          content:
+            application/json:
+              schema:
+                type: string
+components:
+  schemas:
+    LossName:
+      type: string
+      enum:
+        - cross_entropy
+    OptimizerName:
+      type: string
+      enum:
+        - adam
+    AdamOptimizer:
+      type: object
+      properties:
+        lr:
+          type: number
+          format: float64
+          minimum: 0
+          maximum: 1
+          example: 0.001
+        beta1:
+          type: number
+          format: float64
+          minimum: 0
+          maximum: 1
+          example: 0.5
+        beta2:
+          type: number
+          format: float64
+          minimum: 0
+          maximum: 1
+          example: 0.99
+    SchedulerName:
+      type: string
+      enum:
+        - cosine
+        - linear
+        - step
+    StepScheduler:
+      type: object
+      properties:
+        lr_decay_iters:
+          type: integer
+          description: multiply by a gamma every lr_decay_iters iterations
+          example: 50
+    InitWeightName:
+      type: string
+      enum:
+        - kaiming
+        - normal
+        - orthogonal
+        - xavier
+    NormalWeight:
+      type: object
+      properties:
+        init_gain:
+          type: number
+          format: float
+          description: Scaling Factor
+          example: 0.02
+    OrthogonalWeight:
+      type: object
+      properties:
+        init_gain:
+          type: number
+          format: float
+          description: Scaling Factor
+          example: 0.02
+    XavierWeight:
+      type: object
+      properties:
+        init_gain:
+          type: number
+          format: float
+          description: Scaling Factor
+          example: 0.02
+    ActivationModuleName:
+      type: string
+      enum:
+        - softmax
+        - l2softmax
+        - arcface
+        - cosface
+    ModuleName:
+      type: string
+      enum:
+        - fc
+    FCModule:
+      type: object
+      properties:
+        n_layers:
+          type: string
+          description: 各層のパーセプトロン数
+          example: "1024,516"
+    ModelName:
+      type: string
+      enum:
+        - simple
+    SimpleModel:
+      type: object
+      properties:
+        last_p_dim:
+          type: integer
+          description: 最終層のパーセプトロン数
+          example: 256
+    DatasetName:
+      type: string
+      enum:
+        - mnist
+    DataloaderName:
+      type: string
+      enum:
+        - simple
+    LoggerName:
+      type: string
+      enum:
+        - simple
+        - mlflow
+    TransformName:
+      type: string
+      enum:
+        - no
+        - affine
+    BaseOption:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 実験の固有名
+          example: "mnist_vgg_0725"
+        gpu_ids:
+          type: string
+          description: 使用するGPUのIDをカンマ区切り(0でCPU)
+          example: "0"
+        verbose:
+          type: boolean
+          description: 詳細を表示する
+        model_name:
+          $ref: "#/components/schemas/ModelName"
+        dataset_name:
+          $ref: "#/components/schemas/DatasetName"
+        dataloader_name:
+          $ref: "#/components/schemas/DataloaderName"
+        logger_name:
+          $ref: "#/components/schemas/LoggerName"
+        max_dataset_size:
+          type: integer
+          description: 読み込むデータセット長の上限
+          example: 1000
+        batch_size:
+          type: integer
+          description: バッチサイズ
+          example: 64
+        in_size:
+          type: integer
+          description: 入力画像の大きさ
+          enum:
+            - 28
+        in_nch:
+          type: integer
+          description: 入力画像のチャンネル数
+          enum:
+            - 1
+            - 3
+        out_dim:
+          type: integer
+          description: 分類のクラス数
+        save_dir:
+          type: string
+          description: モデルの出力の保存先ルートディレクトリ
+          example: "../checkpoints"
+    TrainOption:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/BaseOption/properties/name"
+        gpu_ids:
+          $ref: "#/components/schemas/BaseOption/properties/gpu_ids"
+        verbose:
+          $ref: "#/components/schemas/BaseOption/properties/verbose"
+        model_name:
+          $ref: "#/components/schemas/ModelName"
+        dataset_name:
+          $ref: "#/components/schemas/DatasetName"
+        dataloader_name:
+          $ref: "#/components/schemas/DataloaderName"
+        logger_name:
+          $ref: "#/components/schemas/LoggerName"
+        max_dataset_size:
+          $ref: "#/components/schemas/BaseOption/properties/max_dataset_size"
+        batch_size:
+          $ref: "#/components/schemas/BaseOption/properties/batch_size"
+        in_size:
+          $ref: "#/components/schemas/BaseOption/properties/in_size"
+        in_nch:
+          $ref: "#/components/schemas/BaseOption/properties/in_nch"
+        out_dim:
+          $ref: "#/components/schemas/BaseOption/properties/out_dim"
+        save_dir:
+          $ref: "#/components/schemas/BaseOption/properties/save_dir"
+        train_transform_name:
+          $ref: "#/components/schemas/TransformName"
+        val_transform_name:
+          $ref: "#/components/schemas/TransformName"
+        train_ratio:
+          type: number
+          format: float64
+          minimum: 0
+          maximum: 1
+          description: 学習データと検証データに占める学習データの割合
+          example: 0.8
+        n_epochs:
+          type: integer
+          description: 初期LearningRateで実行するエポック数
+          example: 100
+        n_epochs_decay:
+          type: integer
+          description: LearningRateを減衰させながら実行するエポック数
+          example: 100
+        epoch:
+          type: integer
+          description: 事前学習時の最後のepoch (ない場合は1)
+          example: 1
+        continue_train:
+          type: boolean
+          description: 前回の学習を続行する
+    TestOption:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/BaseOption/properties/name"
+        gpu_ids:
+          $ref: "#/components/schemas/BaseOption/properties/gpu_ids"
+        verbose:
+          $ref: "#/components/schemas/BaseOption/properties/verbose"
+        model_name:
+          $ref: "#/components/schemas/ModelName"
+        dataset_name:
+          $ref: "#/components/schemas/DatasetName"
+        dataloader_name:
+          $ref: "#/components/schemas/DataloaderName"
+        logger_name:
+          $ref: "#/components/schemas/LoggerName"
+        max_dataset_size:
+          $ref: "#/components/schemas/BaseOption/properties/max_dataset_size"
+        batch_size:
+          $ref: "#/components/schemas/BaseOption/properties/batch_size"
+        in_size:
+          $ref: "#/components/schemas/BaseOption/properties/in_size"
+        in_nch:
+          $ref: "#/components/schemas/BaseOption/properties/in_nch"
+        out_dim:
+          $ref: "#/components/schemas/BaseOption/properties/out_dim"
+        save_dir:
+          $ref: "#/components/schemas/BaseOption/properties/save_dir"
+        test_transform_name:
+          $ref: "#/components/schemas/TransformName"
+        results_dir:
+          type: string
+          description: 結果の保存先 (未使用)
+          deprecated: true
+        num_test:
+          type: integer
+          description: 推論を何回行うか
+          deprecated: true
